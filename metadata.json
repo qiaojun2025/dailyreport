@@ -1,0 +1,5 @@
+{
+  "name": "任务日报 - Task Daily Report",
+  "description": "一个简洁的移动端任务统计日报页面，展示用户每日任务完成情况、耗时及贡献度。",
+  "requestFramePermissions": []
+}
