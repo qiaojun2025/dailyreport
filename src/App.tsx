@@ -7,12 +7,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronRight, ChevronLeft, ClipboardList, Volume2, XCircle } from "lucide-react";
 
-type View = "daily" | "list";
+type View = "daily" | "list" | "snapshot";
 
 export default function App() {
   const [view, setView] = useState<View>("daily");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const [selectedReportId, setSelectedReportId] = useState<string>("");
 
   const currentDate = new Date().toLocaleString('zh-CN', {
     year: 'numeric',
@@ -269,7 +270,15 @@ export default function App() {
               {selectedStatus === "failed" && (
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm">错题数</span>
-                  <span className="text-red-500 font-medium">2个</span>
+                  <button 
+                    onClick={() => {
+                      setSelectedReportId(report.id);
+                      setView("snapshot");
+                    }}
+                    className="text-red-500 font-medium hover:underline cursor-pointer flex items-center gap-0.5"
+                  >
+                    2个 <ChevronRight size={14} />
+                  </button>
                 </div>
               )}
               {selectedStatus !== "underReview" && selectedStatus !== "failed" && (
@@ -344,10 +353,84 @@ export default function App() {
     </motion.div>
   );
 
+  const SnapshotPage = () => (
+    <motion.div 
+      key="snapshot"
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 20 }}
+      className="w-full max-w-md pb-10"
+    >
+      {/* Header */}
+      <div className="flex items-center gap-3 mb-6 px-2">
+        <button 
+          onClick={() => setView("list")}
+          className="p-1 -ml-2 text-gray-600 hover:bg-gray-200 rounded-full transition-colors"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <h1 className="text-xl font-semibold text-gray-800">我的错题</h1>
+      </div>
+
+      <div className="bg-white rounded-3xl shadow-sm overflow-hidden p-6 mb-6">
+        <div className="space-y-4">
+          <h3 className="text-[#888] text-base font-bold mb-4">
+            {selectedCategory.includes("采集任务") ? "未通过记录快照" : "错题快照"}
+          </h3>
+          <div className="space-y-3">
+            {selectedCategory.includes("采集任务") ? (
+              mockUnpassedRecords.map((record, rIdx) => (
+                <div key={rIdx} className="bg-[#F2F3F5] rounded-3xl p-4 flex items-center gap-4">
+                  <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-blue-500 shadow-sm">
+                    <Volume2 size={32} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-gray-900 text-base font-bold mb-2">{record.text}</p>
+                    <div className="flex items-center gap-1.5 text-[#FF3B30] text-sm font-medium">
+                      <XCircle size={16} />
+                      <span>{record.error}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              mockWrongQuestions.map((q, qIdx) => (
+                <div key={qIdx} className="bg-[#F2F3F5] rounded-3xl p-4 flex items-center gap-4">
+                  <img 
+                    src={q.image} 
+                    alt="wrong question" 
+                    className="w-20 h-20 rounded-2xl object-cover shadow-sm"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="flex-1">
+                    <p className="text-gray-900 text-base font-bold mb-2">{q.question}</p>
+                    <div className="flex items-center gap-3 text-sm font-medium">
+                      <span className="text-[#FF3B30]">{q.wrongAnswer}</span>
+                      <span className="text-gray-300">
+                        <ChevronRight size={14} strokeWidth={3} />
+                      </span>
+                      <span className="text-[#34C759]">{q.correctAnswer}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 flex items-start justify-center p-4 font-sans text-[#333]">
       <AnimatePresence mode="wait">
-        {view === "daily" ? <DailyReport /> : <TaskReportList />}
+        {view === "daily" ? (
+          <DailyReport />
+        ) : view === "list" ? (
+          <TaskReportList />
+        ) : (
+          <SnapshotPage />
+        )}
       </AnimatePresence>
     </div>
   );
