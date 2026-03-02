@@ -260,7 +260,13 @@ export default function App() {
                 <span className="text-gray-400 text-sm">任务耗时</span>
                 <span className="text-gray-800 font-medium">{report.duration}</span>
               </div>
-              {selectedStatus !== "underReview" && (
+              {selectedStatus === "failed" && (
+                <div className="flex justify-between items-center">
+                  <span className="text-gray-400 text-sm">错题数</span>
+                  <span className="text-red-500 font-medium">2个</span>
+                </div>
+              )}
+              {selectedStatus !== "underReview" && selectedStatus !== "failed" && (
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm">任务准确率</span>
                   <span className="text-green-500 font-medium">{report.accuracy}</span>
