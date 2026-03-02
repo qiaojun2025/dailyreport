@@ -249,6 +249,12 @@ export default function App() {
                 </span>
               </div>
               <div className="flex justify-between items-center">
+                <span className="text-gray-400 text-sm">文件类型</span>
+                <span className="text-gray-800 font-medium">
+                  {selectedCategory.includes("采集任务") ? "语音" : "图片"}
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
                 <span className="text-gray-400 text-sm">任务级别</span>
                 <span className="text-gray-800 font-medium">{report.level}</span>
               </div>
