@@ -185,12 +185,6 @@ export default function App() {
         </section>
       </div>
 
-      {/* Footer / Action */}
-      <div className="mt-12 pt-6 border-t border-gray-100 text-center">
-        <button className="text-purple-500 text-sm font-medium flex items-center justify-center gap-1 mx-auto hover:opacity-80 transition-opacity">
-          查看历史报告 <ChevronRight size={16} />
-        </button>
-      </div>
     </motion.div>
   );
 
@@ -322,9 +316,7 @@ export default function App() {
 
       <div className="bg-white rounded-3xl shadow-sm overflow-hidden p-6 mb-6">
         <div className="space-y-4">
-          <h3 className="text-[#888] text-base font-bold mb-4">
-            {selectedCategory.includes("采集任务") ? "未通过记录快照" : "错题快照"}
-          </h3>
+          <h3 className="text-[#888] text-base font-bold mb-4">错题快照</h3>
           <div className="space-y-3">
             {selectedCategory.includes("采集任务") ? (
               mockUnpassedRecords.map((record, rIdx) => (
