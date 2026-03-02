@@ -5,7 +5,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronRight, ChevronLeft, ClipboardList } from "lucide-react";
+import { ChevronRight, ChevronLeft, ClipboardList, Volume2, XCircle } from "lucide-react";
 
 type View = "daily" | "list";
 
@@ -63,6 +63,32 @@ export default function App() {
       accuracy: "10/20",
       contribution: "+10 积分",
       status: "已完成"
+    }
+  ];
+
+  const mockWrongQuestions = [
+    {
+      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&h=200&fit=crop",
+      question: "图中物品的颜色是？",
+      wrongAnswer: "黑色",
+      correctAnswer: "白色"
+    },
+    {
+      image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&h=200&fit=crop",
+      question: "这是什么电子设备？",
+      wrongAnswer: "音箱",
+      correctAnswer: "耳机"
+    }
+  ];
+
+  const mockUnpassedRecords = [
+    {
+      text: "今天天气真不错，适合出去玩。",
+      error: "采集质量未达标"
+    },
+    {
+      text: "人工智能正在改变我们的生活方式。",
+      error: "采集质量未达标"
     }
   ];
 
@@ -246,6 +272,58 @@ export default function App() {
               <div className="pt-4 border-t border-gray-100 flex justify-between items-center">
                 <span className="text-gray-400 text-sm">获得贡献度</span>
                 <span className="text-purple-500 font-semibold">{report.contribution}</span>
+              </div>
+            )}
+
+            {/* Wrong Question Snapshot Section (Quick Judgment) */}
+            {selectedStatus === "failed" && selectedCategory.includes("快判任务") && (
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <h3 className="text-[#888] text-base font-bold mb-4">错题快照</h3>
+                <div className="space-y-3">
+                  {mockWrongQuestions.map((q, qIdx) => (
+                    <div key={qIdx} className="bg-[#F2F3F5] rounded-3xl p-4 flex items-center gap-4">
+                      <img 
+                        src={q.image} 
+                        alt="wrong question" 
+                        className="w-20 h-20 rounded-2xl object-cover shadow-sm"
+                        referrerPolicy="no-referrer"
+                      />
+                      <div className="flex-1">
+                        <p className="text-gray-900 text-base font-bold mb-2">{q.question}</p>
+                        <div className="flex items-center gap-3 text-sm font-medium">
+                          <span className="text-[#FF3B30]">{q.wrongAnswer}</span>
+                          <span className="text-gray-300">
+                            <ChevronRight size={14} strokeWidth={3} />
+                          </span>
+                          <span className="text-[#34C759]">{q.correctAnswer}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Unpassed Record Snapshot Section (Collection Task) */}
+            {selectedStatus === "failed" && selectedCategory.includes("采集任务") && (
+              <div className="mt-6 pt-6 border-t border-gray-100">
+                <h3 className="text-[#888] text-base font-bold mb-4">未通过记录快照</h3>
+                <div className="space-y-3">
+                  {mockUnpassedRecords.map((record, rIdx) => (
+                    <div key={rIdx} className="bg-[#F2F3F5] rounded-3xl p-4 flex items-center gap-4">
+                      <div className="w-20 h-20 bg-white rounded-2xl flex items-center justify-center text-blue-500 shadow-sm">
+                        <Volume2 size={32} />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-gray-900 text-base font-bold mb-2">{record.text}</p>
+                        <div className="flex items-center gap-1.5 text-[#FF3B30] text-sm font-medium">
+                          <XCircle size={16} />
+                          <span>{record.error}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             )}
           </div>
