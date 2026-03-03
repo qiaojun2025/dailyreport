@@ -132,7 +132,7 @@ export default function App() {
       <div className="space-y-8">
         {/* Under Review Section */}
         <section>
-          <h2 className="text-lg font-medium text-gray-800 mb-4">审核中报告</h2>
+          <h2 className="text-lg font-medium text-gray-800 mb-4">数据审核中</h2>
           <div className="space-y-4">
             {userData.underReviewTasks.map((task, idx) => (
               <div key={idx} className="flex justify-between items-center">
@@ -150,7 +150,7 @@ export default function App() {
 
         {/* Approved Section */}
         <section>
-          <h2 className="text-lg font-medium text-gray-800 mb-4">审核通过报告</h2>
+          <h2 className="text-lg font-medium text-gray-800 mb-4">数据已验收</h2>
           <div className="space-y-4">
             {userData.approvedTasks.map((task, idx) => (
               <div key={idx} className="flex justify-between items-center">
@@ -168,7 +168,7 @@ export default function App() {
 
         {/* Failed Section */}
         <section>
-          <h2 className="text-lg font-medium text-gray-800 mb-4">审核未通过报告</h2>
+          <h2 className="text-lg font-medium text-gray-800 mb-4">未通过验收</h2>
           <div className="space-y-4">
             {userData.failedTasks.map((task, idx) => (
               <div key={idx} className="flex justify-between items-center">
@@ -218,11 +218,11 @@ export default function App() {
               <h2 className="text-lg font-semibold text-gray-800">任务报告</h2>
               <span className="bg-purple-100 text-purple-500 text-xs px-2 py-0.5 rounded-md font-medium">
                 {selectedStatus === "underReview" 
-                  ? "审核中" 
+                  ? "数据审核中" 
                   : selectedStatus === "failed" 
-                    ? "审核未通过" 
+                    ? "未通过验收" 
                     : selectedStatus === "approved"
-                      ? "审核通过"
+                      ? "数据已验收"
                       : report.status}
               </span>
             </div>
@@ -263,7 +263,7 @@ export default function App() {
               </div>
               {selectedStatus === "failed" && (
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm">错题数</span>
+                  <span className="text-gray-400 text-sm">未达标题数</span>
                   <button 
                     onClick={() => {
                       setSelectedReportId(report.id);
@@ -311,12 +311,12 @@ export default function App() {
         >
           <ChevronLeft size={24} />
         </button>
-        <h1 className="text-xl font-semibold text-gray-800">我的错题</h1>
+        <h1 className="text-xl font-semibold text-gray-800">未达标题目</h1>
       </div>
 
       <div className="bg-white rounded-3xl shadow-sm overflow-hidden p-6 mb-6">
         <div className="space-y-4">
-          <h3 className="text-[#888] text-base font-bold mb-4">错题快照</h3>
+          <h3 className="text-[#888] text-base font-bold mb-4">题目列表</h3>
           <div className="space-y-3">
             {selectedCategory.includes("采集任务") ? (
               mockUnpassedRecords.map((record, rIdx) => (
